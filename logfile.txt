@@ -1,2 +1,0 @@
-Result: Passed tests of 3!
-Your highest number was: 2
