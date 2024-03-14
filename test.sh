@@ -9,6 +9,7 @@
 		# Bonus:			"checker" not named as stated in subject.
 
 # Display Options
+parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 echo "Welcome to the automated Tester for push_swap of 42 Core Curriculum!"
 echo "To run correctly the source files of the tester need to be put in the Project folder!"
 echo "The source files are: yet to be developed"
@@ -110,7 +111,7 @@ MAX_BIG=0
 if [ "$line" == "5" ] || [ "$MANDATORY" == 1 ]
 then
 	# File to read
-	file="solve_3.txt"
+	file="$parent_path/solve_1-3.txt"
 	# Check if the file exists
 	if [ ! -f "$file" ]; then
 		echo "File '$file' not found!"
@@ -124,7 +125,13 @@ then
 		TCASE="$line_file"
 		if [ "$VALGRIND" == 1 ]
 			then
-				valgrind -s --show-leak-kinds=all --error-exitcode=5 --exit-on-first-error=no --leak-check=full ./push_swap $TCASE
+				valgrind -s --show-leak-kinds=all --error-exitcode=5 --exit-on-first-error=no --leak-check=full ./push_swap $TCASE &>> $LOGFILE
+			fi
+			if [ $? == 5 ]
+			then
+			WRONG=1
+			echo "valgrind -s --show-leak-kinds=all --error-exitcode=5 --exit-on-first-error=no --leak-check=full ./push_swap $TCASE"
+			echo "Valgrind error!!"
 			fi
 			output=0
 			output=$(./push_swap "$TCASE" | ./checker_linux "$TCASE")
@@ -149,181 +156,181 @@ then
 	fi
 fi
 
-# Tests with 5 objects
-if [ "$line" == "6" ] || [ "$MANDATORY" == 1 ]
-then
-	# File to read
-	file="solve_5.txt"
-	# Check if the file exists
-	if [ ! -f "$file" ]; then
-		echo "File '$file' not found!"
-		exit 1
-	fi
-	MAX=0
-	WRONG=0
-	# Read lines from the file
-	while IFS= read -r line_file; do
-		echo "Line: $line_file"
-		TCASE="$line_file"
-		if [ "$VALGRIND" == 1 ]
-			then
-				valgrind -s --show-leak-kinds=all --error-exitcode=5 --exit-on-first-error=no --leak-check=full ./push_swap $TCASE
-				# [ ] use return value for output
-			fi
-			output=0
-			output=$(./push_swap "$TCASE" | ./checker_linux "$TCASE")
-			echo $output
-			if [ "$output" != "OK" ]
-			then
-			WRONG=1
-			fi
-			./push_swap $TCASE | wc -l
-			COUNT=$(./push_swap $TCASE | wc -l)
-			NCOUNT=$(expr "$COUNT" + 0)
-			if [ $MAX -lt $NCOUNT ]
-			then
-			MAX=$NCOUNT
-		fi
-	done < "$file"
+# # Tests with 5 objects
+# if [ "$line" == "6" ] || [ "$MANDATORY" == 1 ]
+# then
+# 	# File to read
+# 	file="solve_5.txt"
+# 	# Check if the file exists
+# 	if [ ! -f "$file" ]; then
+# 		echo "File '$file' not found!"
+# 		exit 1
+# 	fi
+# 	MAX=0
+# 	WRONG=0
+# 	# Read lines from the file
+# 	while IFS= read -r line_file; do
+# 		echo "Line: $line_file"
+# 		TCASE="$line_file"
+# 		if [ "$VALGRIND" == 1 ]
+# 			then
+# 				valgrind -s --show-leak-kinds=all --error-exitcode=5 --exit-on-first-error=no --leak-check=full ./push_swap $TCASE | tee -a $LOGFILE
+# 				# [ ] use return value for output
+# 			fi
+# 			output=0
+# 			output=$(./push_swap "$TCASE" | ./checker_linux "$TCASE")
+# 			echo $output
+# 			if [ "$output" != "OK" ]
+# 			then
+# 			WRONG=1
+# 			fi
+# 			./push_swap $TCASE | wc -l
+# 			COUNT=$(./push_swap $TCASE | wc -l)
+# 			NCOUNT=$(expr "$COUNT" + 0)
+# 			if [ $MAX -lt $NCOUNT ]
+# 			then
+# 			MAX=$NCOUNT
+# 		fi
+# 	done < "$file"
 
-	if [ $MAX -le 3 -a $WRONG == 0 ]
-	then
-		FIVE=1
-		MAX_5=$(expr "$MAX" + 0)
-	fi
-fi
+# 	if [ $MAX -le 3 -a $WRONG == 0 ]
+# 	then
+# 		FIVE=1
+# 		MAX_5=$(expr "$MAX" + 0)
+# 	fi
+# fi
 
-# Tests with 10 objects
-if [ "$line" == "7" ] || [ "$MANDATORY" == 1 ]
-then
-	# File to read
-	file="solve_10.txt"
-	# Check if the file exists
-	if [ ! -f "$file" ]; then
-		echo "File '$file' not found!"
-		exit 1
-	fi
-	MAX=0
-	WRONG=0
-	# Read lines from the file
-	while IFS= read -r line_file; do
-		echo "Line: $line_file"
-		TCASE="$line_file"
-		if [ "$VALGRIND" == 1 ]
-			then
-				valgrind -s --show-leak-kinds=all --error-exitcode=5 --exit-on-first-error=no --leak-check=full ./push_swap $TCASE
-				# [ ] use return value for output
-			fi
-			output=0
-			output=$(./push_swap "$TCASE" | ./checker_linux "$TCASE")
-			echo $output
-			if [ "$output" != "OK" ]
-			then
-			WRONG=1
-			fi
-			./push_swap $TCASE | wc -l
-			COUNT=$(./push_swap $TCASE | wc -l)
-			NCOUNT=$(expr "$COUNT" + 0)
-			if [ $MAX -lt $NCOUNT ]
-			then
-			MAX=$NCOUNT
-		fi
-	done < "$file"
+# # Tests with 10 objects
+# if [ "$line" == "7" ] || [ "$MANDATORY" == 1 ]
+# then
+# 	# File to read
+# 	file="solve_10.txt"
+# 	# Check if the file exists
+# 	if [ ! -f "$file" ]; then
+# 		echo "File '$file' not found!"
+# 		exit 1
+# 	fi
+# 	MAX=0
+# 	WRONG=0
+# 	# Read lines from the file
+# 	while IFS= read -r line_file; do
+# 		echo "Line: $line_file"
+# 		TCASE="$line_file"
+# 		if [ "$VALGRIND" == 1 ]
+# 			then
+# 				valgrind -s --show-leak-kinds=all --error-exitcode=5 --exit-on-first-error=no --leak-check=full ./push_swap $TCASE | tee -a $LOGFILE
+# 				# [ ] use return value for output
+# 			fi
+# 			output=0
+# 			output=$(./push_swap "$TCASE" | ./checker_linux "$TCASE")
+# 			echo $output
+# 			if [ "$output" != "OK" ]
+# 			then
+# 			WRONG=1
+# 			fi
+# 			./push_swap $TCASE | wc -l
+# 			COUNT=$(./push_swap $TCASE | wc -l)
+# 			NCOUNT=$(expr "$COUNT" + 0)
+# 			if [ $MAX -lt $NCOUNT ]
+# 			then
+# 			MAX=$NCOUNT
+# 		fi
+# 	done < "$file"
 
-	if [ $MAX -le 3 -a $WRONG == 0 ]
-	then
-		TEN=1
-		$MAX_10=$(expr "$MAX" + 0)
-	fi
-fi
+# 	if [ $MAX -le 3 -a $WRONG == 0 ]
+# 	then
+# 		TEN=1
+# 		$MAX_10=$(expr "$MAX" + 0)
+# 	fi
+# fi
 
 # Tests with 100 objects
-if [ "$line" == "8" ] || [ "$MANDATORY" == 1 ]
-then
-	# File to read
-	file="solve_100.txt"
-	# Check if the file exists
-	if [ ! -f "$file" ]; then
-		echo "File '$file' not found!"
-		exit 1
-	fi
-	MAX=0
-	WRONG=0
-	# Read lines from the file
-	while IFS= read -r line_file; do
-		echo "Line: $line_file"
-		TCASE="$line_file"
-		if [ "$VALGRIND" == 1 ]
-			then
-				valgrind -s --show-leak-kinds=all --error-exitcode=5 --exit-on-first-error=no --leak-check=full ./push_swap $TCASE
-				# [ ] use return value for output
-			fi
-			output=0
-			output=$(./push_swap "$TCASE" | ./checker_linux "$TCASE")
-			echo $output
-			if [ "$output" != "OK" ]
-			then
-			WRONG=1
-			fi
-			./push_swap $TCASE | wc -l
-			COUNT=$(./push_swap $TCASE | wc -l)
-			NCOUNT=$(expr "$COUNT" + 0)
-			if [ $MAX -lt $NCOUNT ]
-			then
-			MAX=$NCOUNT
-		fi
-	done < "$file"
+# if [ "$line" == "8" ] || [ "$MANDATORY" == 1 ]
+# then
+# 	# File to read
+# 	file="solve_100.txt"
+# 	# Check if the file exists
+# 	if [ ! -f "$file" ]; then
+# 		echo "File '$file' not found!"
+# 		exit 1
+# 	fi
+# 	MAX=0
+# 	WRONG=0
+# 	# Read lines from the file
+# 	while IFS= read -r line_file; do
+# 		echo "Line: $line_file"
+# 		TCASE="$line_file"
+# 		if [ "$VALGRIND" == 1 ]
+# 			then
+# 				valgrind -s --show-leak-kinds=all --error-exitcode=5 --exit-on-first-error=no --leak-check=full ./push_swap $TCASE | tee -a $LOGFILE
+# 				# [ ] use return value for output
+# 			fi
+# 			output=0
+# 			output=$(./push_swap "$TCASE" | ./checker_linux "$TCASE")
+# 			echo $output
+# 			if [ "$output" != "OK" ]
+# 			then
+# 			WRONG=1
+# 			fi
+# 			./push_swap $TCASE | wc -l
+# 			COUNT=$(./push_swap $TCASE | wc -l)
+# 			NCOUNT=$(expr "$COUNT" + 0)
+# 			if [ $MAX -lt $NCOUNT ]
+# 			then
+# 			MAX=$NCOUNT
+# 		fi
+# 	done < "$file"
 
-	if [ $MAX -le 3 -a $WRONG == 0 ]
-	then
-		HUNDRED=1
-		$MAX_100=$(expr "$MAX" + 0)
-	fi
-fi
+# 	if [ $MAX -le 3 -a $WRONG == 0 ]
+# 	then
+# 		HUNDRED=1
+# 		$MAX_100=$(expr "$MAX" + 0)
+# 	fi
+# fi
 
-# Tests with big objects
-if [ "$line" == "9" ] || [ "$MANDATORY" == 1 ]; then
-	# File to read
-	file="solve_big.txt"
-	# Check if the file exists
-	if [ ! -f "$file" ]; then
-		echo "File '$file' not found!"
-		exit 1
-	fi
-	MAX=0
-	WRONG=0
-	LINE_COUNT=0
-	# Read lines from the file
-	while IFS= read -r line_file; do
-		echo "Line: $line_file"
-		TCASE="$line_file"
-		LINE_COUNT=$((LINE_COUNT + 1))
-		if [ "$VALGRIND" == 1 ]; then
-			valgrind -s --show-leak-kinds=all --error-exitcode=5 --exit-on-first-error=no --leak-check=full ./push_swap "$TCASE"
-			# [ ] use return value for output
-		fi
-		output=0
-		output=$(./push_swap "$TCASE" | ./checker_linux "$TCASE")
-		echo "$output"
-		if [ "$output" != "OK" ] && [ "$LINE_COUNT" -le 9 ]; then
-			WRONG=1
-		fi
-		if [ "$output" != "ERROR" ] && [ "$LINE_COUNT" -ge 10 ]; then
-			WRONG=1
-		fi
-		./push_swap "$TCASE" | wc -l
-		COUNT=$(./push_swap "$TCASE" | wc -l)
-		NCOUNT=$((COUNT + 0))
-		if [ "$MAX" -lt "$NCOUNT" ]; then
-			MAX="$NCOUNT"
-		fi
-		echo "$LINE_COUNT"
-	done < "$file"
-	if [ "$MAX" -le 3 ] && [ "$WRONG" == 0 ]; then
-		BIG=1
-		MAX_BIG=$((MAX + 0))
-	fi
-fi
+# # Tests with big objects
+# if [ "$line" == "9" ] || [ "$MANDATORY" == 1 ]; then
+# 	# File to read
+# 	file="solve_big.txt"
+# 	# Check if the file exists
+# 	if [ ! -f "$file" ]; then
+# 		echo "File '$file' not found!"
+# 		exit 1
+# 	fi
+# 	MAX=0
+# 	WRONG=0
+# 	LINE_COUNT=0
+# 	# Read lines from the file
+# 	while IFS= read -r line_file; do
+# 		echo "Line: $line_file"
+# 		TCASE="$line_file"
+# 		LINE_COUNT=$((LINE_COUNT + 1))
+# 		if [ "$VALGRIND" == 1 ]; then
+# 			valgrind -s --show-leak-kinds=all --error-exitcode=5 --exit-on-first-error=no --leak-check=full ./push_swap "$TCASE"
+# 			# [ ] use return value for output
+# 		fi
+# 		output=0
+# 		output=$(./push_swap "$TCASE" | ./checker_linux "$TCASE")
+# 		echo "$output"
+# 		if [ "$output" != "OK" ] && [ "$LINE_COUNT" -le 9 ]; then
+# 			WRONG=1
+# 		fi
+# 		if [ "$output" != "ERROR" ] && [ "$LINE_COUNT" -ge 10 ]; then
+# 			WRONG=1
+# 		fi
+# 		./push_swap "$TCASE" | wc -l
+# 		COUNT=$(./push_swap "$TCASE" | wc -l)
+# 		NCOUNT=$((COUNT + 0))
+# 		if [ "$MAX" -lt "$NCOUNT" ]; then
+# 			MAX="$NCOUNT"
+# 		fi
+# 		echo "$LINE_COUNT"
+# 	done < "$file"
+# 	if [ "$MAX" -le 3 ] && [ "$WRONG" == 0 ]; then
+# 		BIG=1
+# 		MAX_BIG=$((MAX + 0))
+# 	fi
+# fi
 
 #Output results:
 
