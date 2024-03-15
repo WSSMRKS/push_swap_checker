@@ -139,6 +139,8 @@ then
 			if [ "$output" != "OK" ]
 			then
 			WRONG=1
+			echo "Output mismatch!!"
+			echo "./push_swap $TCASE"
 			fi
 			./push_swap $TCASE | wc -l
 			COUNT=$(./push_swap $TCASE | wc -l)
