@@ -93,8 +93,8 @@ then
 	(cd ../ && make bonus && cd "$parent_path/") &> $SILENT
 	(cp "../checker" "$parent_path/") &> $SILENT
 fi
-(cd $parent_path/ && cd ../ && make clean && cd "$parent_path") 
-(cp "../push_swap" "./") 
+(cd $parent_path/ && cd ../ && make clean && cd "$parent_path")
+(cp "../push_swap" "./")
 # set variables
 LOGFILE="$parent_path/logfile.txt"
 rm "$parent_path/logfile.txt" &> $SILENT
@@ -250,11 +250,11 @@ then
 	if [ $WRONG == 0 ]
 	then
 		TEN=1
-		$MAX_10=$(expr "$MAX" + 0)
+		MAX_10=$(expr "$MAX" + 0)
 	fi
 fi
 
-Tests with 100 objects
+# Tests with 100 objects
 if [ "$line" == "8" ] || [ "$MANDATORY" == 1 ]
 then
 	# File to read
@@ -294,53 +294,50 @@ then
 	if [ $WRONG == 0 ]
 	then
 		HUNDRED=1
-		$MAX_100=$(expr "$MAX" + 0)
+		MAX_100=$(expr "$MAX" + 0)
 	fi
 fi
 
-# # Tests with big objects
-# if [ "$line" == "9" ] || [ "$MANDATORY" == 1 ]; then
-# 	# File to read
-# 	file="$parent_path/solve_big.txt"
-# 	# Check if the file exists
-# 	if [ ! -f "$file" ]; then
-# 		echo "File '$file' not found!"
-# 		exit 1
-# 	fi
-# 	MAX=0
-# 	WRONG=0
-# 	LINE_COUNT=0
-# 	# Read lines from the file
-# 	while IFS= read -r line_file; do
-# 		echo "Line: $line_file"
-# 		TCASE="$line_file"
-# 		LINE_COUNT=$((LINE_COUNT + 1))
-# 		if [ "$VALGRIND" == 1 ]; then
-# 			valgrind -s --show-leak-kinds=all --error-exitcode=5 --exit-on-first-error=no --leak-check=full ./push_swap "$TCASE"
-# 			# [ ] use return value for output
-# 		fi
-# 		output=0
-# 		output=$(./push_swap "$TCASE" | ./checker_linux "$TCASE")
-# 		echo "$output"
-# 		if [ "$output" != "OK" ] && [ "$LINE_COUNT" -le 9 ]; then
-# 			WRONG=1
-# 		fi
-# 		if [ "$output" != "ERROR" ] && [ "$LINE_COUNT" -ge 10 ]; then
-# 			WRONG=1
-# 		fi
-# 		./push_swap "$TCASE" | wc -l
-# 		COUNT=$(./push_swap "$TCASE" | wc -l)
-# 		NCOUNT=$((COUNT + 0))
-# 		if [ "$MAX" -lt "$NCOUNT" ]; then
-# 			MAX="$NCOUNT"
-# 		fi
-# 		echo "$LINE_COUNT"
-# 	done < "$file"
-# 	if [ "$MAX" -le 3 ] && [ "$WRONG" == 0 ]; then
-# 		BIG=1
-# 		MAX_BIG=$((MAX + 0))
-# 	fi
-# fi
+# Tests with big objects
+if [ "$line" == "9" ] || [ "$MANDATORY" == 1 ]; then
+	# File to read
+	file="$parent_path/solve_big.txt"
+	# Check if the file exists
+	if [ ! -f "$file" ]; then
+		echo "File '$file' not found!"
+		exit 1
+	fi
+	MAX=0
+	WRONG=0
+	LINE_COUNT=0
+	# Read lines from the file
+	while IFS= read -r line_file; do
+		echo "Line: $line_file"
+		TCASE="$line_file"
+		LINE_COUNT=$((LINE_COUNT + 1))
+		if [ "$VALGRIND" == 1 ]; then
+			valgrind -s --show-leak-kinds=all --error-exitcode=5 --exit-on-first-error=no --leak-check=full ./push_swap "$TCASE"
+			# [ ] use return value for output
+		fi
+		output=0
+		output=$(./push_swap "$TCASE" | ./checker_linux "$TCASE")
+		echo "$output"
+		if [ "$output" != "OK" ]; then
+			WRONG=1
+		fi
+		./push_swap "$TCASE" | wc -l
+		COUNT=$(./push_swap "$TCASE" | wc -l)
+		NCOUNT=$((COUNT + 0))
+		if [ "$MAX" -lt "$NCOUNT" ]; then
+			MAX="$NCOUNT"
+		fi
+		echo "$LINE_COUNT"
+	done < "$file"
+	if [ "$WRONG" == 0 ]; then
+		BIG=1
+		MAX_BIG=$((MAX + 0))
+	fi
+fi
 
 #Output results:
 
@@ -369,10 +366,10 @@ else
 echo "Test of 100 FAIL!"
 fi
 if [ $BIG -eq 1 ]; then
-echo "Test of 500 + Corner cases PASSED!"
+echo "Test of 500 PASSED!"
 echo "Maximum number of moves: $MAX_BIG "
 else
-echo "Test of 500 + Corner cases FAIL!"
+echo "Test of 500 FAIL!"
 fi
 
 # Remove all the files created by make
