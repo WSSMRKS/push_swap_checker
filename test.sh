@@ -2,7 +2,7 @@
 # Bash script of tester for project push_swap from 42 Core Curriculum, by maweiss | https://github.com/WSSMRKS
 # Instructions:
 	# Clone the Repo git@github.com:WSSMRKS/42_get_next_line_tester.git to your push_swap Project folder.
-	# if there is a Makefile it will run the Makefile to make all and make bonus.
+	# (currently disabled) if there is a Makefile it will run the Makefile to make all and make bonus.
 	# depending on your selection when starting the tester it is running the tests.
 	# possible issues:
 		# Mandatory part: 	Makefile not running correctly
@@ -11,14 +11,14 @@
 # Display Options
 parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 echo "Welcome to the automated Tester for push_swap of 42 Core Curriculum!"
-echo "To run correctly the source files of the tester need to be put in the Project folder!"
+echo "To run correctly the Tester folder needs to be put Project folder!"
 echo "The source files are: yet to be developed"
 echo "Results of the tests will be stored in: $parent_path/logfile.txt!"
 echo "Please choose the test scenario:"
 echo "1: Full test + Valgrind!"
-echo "2: Full test including bonus + Valgrind!"
+# echo "2: Full test including bonus + Valgrind!"
 echo "3: Full test"
-echo "4: Full test including bonus!"
+# echo "4: Full test including bonus!"
 echo "5: Tests with 3 objects."
 echo "6: Tests with 5 objects."
 echo "7: Tests with 10 objects."
@@ -85,15 +85,15 @@ else
 	echo "Invalid choice! Please type in a single digit!"
 fi
 SILENT="/dev/null" #silencing output
-# Make project from Makefile
-(cd "$parent_path/" && cd ../ && make && cd "$parent_path") &> $SILENT
+# Make project from Makefile (currently disabled)
+# (cd "$parent_path/" && cd ../ && make && cd "$parent_path") &> $SILENT
 
-if [ "$BONUS" == 1 ]
-then
-	(cd ../ && make bonus && cd "$parent_path/") &> $SILENT
-	(cp "../checker" "$parent_path/") &> $SILENT
-fi
-(cd $parent_path/ && cd ../ && make clean && cd "$parent_path")
+# if [ "$BONUS" == 1 ]
+# then
+# 	(cd ../ && make bonus && cd "$parent_path/") &> $SILENT
+# 	(cp "../checker" "$parent_path/") &> $SILENT
+# fi
+# (cd $parent_path/ && cd ../ && make clean && cd "$parent_path")
 (cp "../push_swap" "./")
 # set variables
 LOGFILE="$parent_path/logfile.txt"
@@ -372,7 +372,7 @@ else
 echo "Test of 500 FAIL!"
 fi
 
-# Remove all the files created by make
-(cd ../ && make fclean) &> $SILENT
-(rm push_swap) &> $SILENT
-(rm checker) &> $SILENT
+# Remove all the files created by make (currently disabled)
+# (cd ../ && make fclean) &> $SILENT
+# (rm push_swap) &> $SILENT
+# (rm checker) &> $SILENT
