@@ -228,7 +228,7 @@ then
 		TCASE="$line_file"
 		if [ "$VALGRIND" == 1 ]
 			then
-				valgrind -s --show-leak-kinds=all --error-exitcode=5 --exit-on-first-error=no --leak-check=full ./push_swap $TCASE | tee -a $LOGFILE
+				valgrind -s --show-leak-kinds=all --error-exitcode=5 --exit-on-first-error=no --leak-check=full ./push_swap $TCASE &>> $LOGFILE
 				# [ ] use return value for output
 			fi
 			output=0
@@ -272,7 +272,7 @@ then
 		TCASE="$line_file"
 		if [ "$VALGRIND" == 1 ]
 			then
-				valgrind -s --show-leak-kinds=all --error-exitcode=5 --exit-on-first-error=no --leak-check=full ./push_swap $TCASE | tee -a $LOGFILE
+				valgrind -s --show-leak-kinds=all --error-exitcode=5 --exit-on-first-error=no --leak-check=full ./push_swap $TCASE &>> $LOGFILE
 				# [ ] use return value for output
 			fi
 			output=0
@@ -316,7 +316,7 @@ if [ "$line" == "9" ] || [ "$MANDATORY" == 1 ]; then
 		TCASE="$line_file"
 		LINE_COUNT=$((LINE_COUNT + 1))
 		if [ "$VALGRIND" == 1 ]; then
-			valgrind -s --show-leak-kinds=all --error-exitcode=5 --exit-on-first-error=no --leak-check=full ./push_swap "$TCASE"
+			valgrind -s --show-leak-kinds=all --error-exitcode=5 --exit-on-first-error=no --leak-check=full ./push_swap "$TCASE" &>> $LOGFILE
 			# [ ] use return value for output
 		fi
 		output=0
